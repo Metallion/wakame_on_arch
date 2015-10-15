@@ -1,4 +1,5 @@
 #!/bin/bash
+set -eux
 
 service mysqld start
 chkconfig mysqld on
@@ -19,7 +20,7 @@ grep -v '\s*#' <<CMDSET | /opt/axsh/wakame-vdc/dcmgr/bin/vdc-manage -e
     --account-id a-shpoolxx \
     --display-name "simple network"
 
-  network dhcp addrange nw-demo1 192.168.4.100 192.168.4.230
+  network dhcp addrange nw-simple 192.168.4.100 192.168.4.230
 
   macrange add 525400 1 ffffff --uuid mr-demomacs
 
@@ -28,3 +29,7 @@ grep -v '\s*#' <<CMDSET | /opt/axsh/wakame-vdc/dcmgr/bin/vdc-manage -e
 
   network dc add-network-mode public securitygroup
 CMDSET
+
+sed -i 's/#RUN=yes/RUN=yes/g' /etc/default/vdc-dcmgr
+
+inictl start vdc-dcmgr
