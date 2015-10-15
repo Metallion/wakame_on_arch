@@ -16,10 +16,12 @@ sudo chroot "${ROOTFS}" /bin/bash -ex <<'EOS'
   usermod -U root
   echo root:centos | chpasswd
 
-  useradd centos
+  useradd centos -G wheel
   echo centos:centos | chpasswd
 
   yum install -y epel-release
+  yum install -y sudo
+
   yum install -y wakame-vdc-dcmgr-vmapp-config
 EOS
 
