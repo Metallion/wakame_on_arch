@@ -3,6 +3,9 @@ set -eux
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 . "${SCRIPT_DIR}/vmspec.conf"
 
+LXC_DIR=/var/lib/lxc
+ROOTFS="${LXC_DIR}/${CONTAINER_NAME}/rootfs"
+
 sudo lxc-create -t centos -n "${CONTAINER_NAME}"
 
 WAKAME_REPO_URL='https://raw.githubusercontent.com/axsh/wakame-vdc/master/rpmbuild/yum_repositories/wakame-vdc-develop.repo'
