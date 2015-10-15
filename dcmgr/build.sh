@@ -9,7 +9,7 @@ ROOTFS="${LXC_DIR}/${CONTAINER_NAME}/rootfs"
 
 sudo lxc-create -t centos -n "${CONTAINER_NAME}"
 
-WAKAME_REPO_URL='https://raw.githubusercontent.com/axsh/wakame-vdc/master/rpmbuild/yum_repositories/wakame-vdc-stable.repo'
+WAKAME_REPO_URL='https://raw.githubusercontent.com/axsh/wakame-vdc/master/rpmbuild/yum_repositories/wakame-vdc-develop.repo'
 sudo curl -o "${ROOTFS}"/etc/yum.repos.d/wakame-vdc-develop.repo -R "${WAKAME_REPO_URL}"
 
 sudo rsync -av "${SCRIPT_DIR}"/rootfs/ "${ROOTFS}/"
