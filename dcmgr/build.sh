@@ -1,11 +1,7 @@
 #!/bin/bash
 set -eux
-
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-
-LXC_DIR=/var/lib/lxc
-CONTAINER_NAME=dcmgr
-ROOTFS="${LXC_DIR}/${CONTAINER_NAME}/rootfs"
+. "${SCRIPT_DIR}/vmspec.conf"
 
 sudo lxc-create -t centos -n "${CONTAINER_NAME}"
 
