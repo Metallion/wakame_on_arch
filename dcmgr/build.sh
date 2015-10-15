@@ -22,7 +22,7 @@ sudo chroot "${ROOTFS}" /bin/bash -ex <<'EOS'
   yum install -y epel-release
   yum install -y sudo
 
-  yum install -y wakame-vdc-dcmgr-vmapp-config
+  yum install -y wakame-vdc-dcmgr-vmapp-config wakame-vdc-webui-vmapp-config
 EOS
 
 sudo rsync -av "${SCRIPT_DIR}"/rootfs/ "${ROOTFS}/"
