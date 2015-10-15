@@ -5,6 +5,10 @@ service mysqld start
 chkconfig mysqld on
 
 cp /opt/axsh/wakame-vdc/dcmgr/config/dcmgr.conf.example /etc/wakame-vdc/dcmgr.conf
+cp /opt/axsh/wakame-vdc/frontend/dcmgr_gui/config/database.yml.example /etc/wakame-vdc/dcmgr_gui/database.yml
+cp /opt/axsh/wakame-vdc/frontend/dcmgr_gui/config/dcmgr_gui.yml.example /etc/wakame-vdc/dcmgr_gui/dcmgr_gui.yml
+cp /opt/axsh/wakame-vdc/frontend/dcmgr_gui/config/instance_spec.yml.example /etc/wakame-vdc/dcmgr_gui/instance_spec.yml
+cp /opt/axsh/wakame-vdc/frontend/dcmgr_gui/config/load_balancer_spec.yml.example /etc/wakame-vdc/dcmgr_gui/load_balancer_spec.yml
 
 mysqladmin -uroot create wakame_dcmgr
 
@@ -30,6 +34,23 @@ grep -v '\s*#' <<CMDSET | /opt/axsh/wakame-vdc/dcmgr/bin/vdc-manage -e
   network dc add-network-mode public securitygroup
 CMDSET
 
-sed -i 's/#RUN=yes/RUN=yes/g' /etc/default/vdc-dcmgr
+mysqladmin -uroot create wakame_dcmgr_gui
+cd /opt/axsh/wakame-vdc/frontend/dcmgr_gui/
+/opt/axsh/wakame-vdc/ruby/bin/rake db:init
 
-inictl start vdc-dcmgr
+/opt/axsh/wakame-vdc/frontend/dcmgr_gui/bin/gui-manage -e <<CMDSET
+  account add --name default --uuid a-shpoolxx
+  user add --name "demo user" --uuid u-demo --password demo --login-id demo
+  user associate u-demo --account-ids a-shpoolxx
+CMDSET
+
+sed -i 's/#RUN=yes/RUN=yes/g' /etc/default/vdc-collector
+sed -i 's/#RUN=yes/RUN=yes/g' /etc/default/vdc-dcmgr
+sed -i 's/#RUN=yes/RUN=yes/g' /etc/default/vdc-webui
+
+service rabbitmq-server start
+chkconfig rabbitmq-server on
+
+initctl start vdc-collector
+initctl start vdc-dcmgr
+initctl start vdc-webui
