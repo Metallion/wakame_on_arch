@@ -26,13 +26,11 @@ sudo chroot "${ROOTFS}" /bin/bash -ex <<'EOS'
   sed -i 's/#PermitRootLogin yes/PermitRootLogin no/g' /etc/ssh/sshd_config
   sed -i 's/#UseDNS yes/UseDNS no/g' /etc/ssh/sshd_config
 
-  cat >> /etc/rc.local <<'EOSS'
-
+  echo '
 if [ -f /etc/first_boot.sh ]; then
   /etc/first_boot.sh
   mv /etc/first_boot.sh /etc/first_boot.sh.was_run
-fi
-EOSS
+fi' >> /etc/rc.local
 
   echo "PS1='[\[\033[00;36m\]\t\[\033[00m\]] \[\e[1;31m\]\u\[\033[01;32m\]@\[\033[01;36m\]\h \[\033[01;34m\] (\w) >\[\033[00m\] '" >> /root/.bashrc
 
