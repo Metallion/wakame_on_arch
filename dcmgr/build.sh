@@ -28,7 +28,8 @@ sudo chroot "${ROOTFS}" /bin/bash -ex <<'EOS'
 
   echo '
 if [ -f /etc/first_boot.sh ]; then
-  /etc/first_boot.sh
+  # We're using su here so ruby won't complain about certain environment variables not being set
+  su root -c /etc/first_boot.sh
   mv /etc/first_boot.sh /etc/first_boot.sh.was_run
 fi' >> /etc/rc.local
 
